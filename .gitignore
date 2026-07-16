@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Compiled output
 /dist
 /tmp
@@ -24,3 +25,9 @@ yarn-error.log
 # System files
 .DS_Store
 Thumbs.db
+=======
+bin/
+obj/
+*.user
+.vs/
+>>>>>>> b11544926bd2fe43d88939eedf05a0734ccd16c5
