@@ -1,0 +1,107 @@
+<div class="card shadow-sm mb-4">
+  <div class="card-header bg-primary text-white">
+    <h4 class="mb-0">Record Exam Result</h4>
+  </div>
+  <div class="card-body">
+
+    <!-- Message -->
+    <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    <div class="row">
+      <!-- Student dropdown -->
+      <div class="col-md-6 form-group mb-3">
+        <label class="form-label fw-bold">Student</label>
+        <select class="form-select" [(ngModel)]="selectedStudentId" name="student" (change)="onStudentChange()">
+          <option [ngValue]="null">-- Select Student --</option>
+          <option *ngFor="let s of examService.students()" [ngValue]="s.StudentID"
+                  [disabled]="isStudentRegisteredForYear(s.StudentID)">
+            {{ s.StudentName }} ({{ formatStudentId(s.StudentID) }})
+          </option>
+        </select>
+      </div>
+
+      <!-- Exam Year -->
+      <div class="col-md-4 form-group mb-3">
+        <label class="form-label fw-bold">Exam Year</label>
+        <input type="number" class="form-control" placeholder="e.g. 2026"
+               [(ngModel)]="examYear" name="examYear" (change)="onYearChange()" />
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row align-items-end">
+      <!-- Subject dropdown -->
+      <div class="col-md-5 form-group mb-3">
+        <label class="form-label fw-bold">Subject</label>
+        <select class="form-select" [(ngModel)]="selectedSubjectId" name="subject">
+          <option [ngValue]="null">-- Select Subject --</option>
+          <option *ngFor="let sub of availableSubjects" [ngValue]="sub.SubjectID">
+            {{ sub.SubjectName }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Marks -->
+      <div class="col-md-3 form-group mb-3">
+        <label class="form-label fw-bold">Marks</label>
+        <input type="number" class="form-control" min="0" max="100" placeholder="0-100"
+               [(ngModel)]="marks" name="marks" />
+      </div>
+
+      <!-- Add button -->
+      <div class="col-md-4 form-group mb-3">
+        <button type="button" class="btn btn-outline-primary w-100" (click)="addSubjectRow()">
+          + Add Subject
+        </button>
+      </div>
+    </div>
+
+    <!-- Added subjects table -->
+    <table class="table table-bordered table-sm mt-2" *ngIf="examRows.length > 0">
+      <thead class="table-light">
+        <tr>
+          <th style="width: 60px;">#</th>
+          <th>Subject</th>
+          <th style="width: 120px;">Marks</th>
+          <th style="width: 90px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of examRows; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ row.SubjectName }}</td>
+          <td>{{ row.Marks }}</td>
+          <td>
+            <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeRow(i)">
+              Remove
+            </button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="table-secondary fw-bold">
+          <td colspan="2" class="text-end">Total Mark</td>
+          <td colspan="2">{{ totalMarks }}</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <p class="text-muted" *ngIf="examRows.length === 0">
+      No subjects added yet. Select a subject, enter marks, and click "Add Subject".
+    </p>
+    <p class="text-warning" *ngIf="examRows.length > 0 && remainingSubjectsCount > 0">
+      Add {{ remainingSubjectsCount }} more subject(s) to enable Save.
+    </p>
+    <p class="text-danger" *ngIf="isSelectedStudentBlocked">
+      This student already has an exam record for {{ examYear }}. Please choose a different student or year.
+    </p>
+
+    <!-- Save (disabled until student + year + EVERY subject has been added) -->
+    <div class="text-end">
+      <button type="button" class="btn btn-success btn-lg" [disabled]="!canSave" (click)="onSave()">
+        {{ saving ? 'Saving...' : 'Save Exam Record' }}
+      </button>
+    </div>
+  </div>
+</div>

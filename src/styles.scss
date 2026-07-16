@@ -1,0 +1,16 @@
+/* Global styles for the Exam Management App */
+html, body {
+  height: 100%;
+  background-color: #f4f6f9;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.app-shell {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}

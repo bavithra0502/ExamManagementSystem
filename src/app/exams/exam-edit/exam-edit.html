@@ -1,0 +1,54 @@
+<div class="card shadow-sm">
+  <div class="card-header bg-primary text-white">
+    <h4 class="mb-0">Edit Exam Result</h4>
+  </div>
+  <div class="card-body">
+
+    <p *ngIf="loading" class="text-muted">Loading...</p>
+
+    <div *ngIf="!loading">
+      <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label fw-bold">Student</label>
+          <input type="text" class="form-control" [value]="studentName" disabled>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Exam Year</label>
+          <input type="text" class="form-control" [value]="examYear" disabled>
+        </div>
+      </div>
+
+      <table class="table table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Subject</th>
+            <th style="width: 150px;">Marks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of subjectRows">
+            <td class="align-middle">{{ row.SubjectName }}</td>
+            <td>
+              <input type="number" class="form-control" min="0" max="100"
+                     [(ngModel)]="row.Marks" name="marks-{{ row.SubjectID }}">
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="table-secondary fw-bold">
+            <td class="text-end">Total Mark</td>
+            <td>{{ totalMarks }}</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="text-end">
+        <button type="button" class="btn btn-success btn-lg" [disabled]="saving" (click)="onSave()">
+          {{ saving ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

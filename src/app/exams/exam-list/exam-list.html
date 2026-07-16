@@ -1,0 +1,40 @@
+<div class="card shadow-sm">
+  <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+    <h4 class="mb-0">Saved Exam Records</h4>
+    <a routerLink="/exam-entry" class="btn btn-light btn-sm">+ Record New Exam</a>
+  </div>
+  <div class="card-body">
+    <table class="table table-striped table-hover" *ngIf="examService.examResults().length > 0; else noRecords">
+      <thead class="table-dark">
+        <tr>
+          <th>Master ID</th>
+          <th>Student Name</th>
+          <th>Year</th>
+          <th>Total Marks</th>
+          <th>Pass / Fail</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let exam of examService.examResults()">
+          <td>{{ exam.MasterID }}</td>
+          <td>{{ exam.StudentName }}</td>
+          <td>{{ exam.ExamYear }}</td>
+          <td class="fw-bold">{{ exam.TotalMark }}</td>
+          <td>
+            <span class="badge" [ngClass]="exam.PassOrFail === 'PASS' ? 'bg-success' : 'bg-danger'">
+              {{ exam.PassOrFail }}
+            </span>
+          </td>
+          <td>
+            <a [routerLink]="['/exam-edit', exam.MasterID]" class="btn btn-sm btn-outline-primary">Edit</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #noRecords>
+      <p class="text-muted mb-0">No exam records saved yet.</p>
+    </ng-template>
+  </div>
+</div>
